@@ -1,11 +1,14 @@
 import React from 'react'
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
+const Header: React.FC = () => {
+    const navigate = useNavigate();
+
     return (
         <div className='h-20 grid content-center bg-slate-700'>
-            <div className='md:container md:mx-auto flex justify-between text-slate-300'>
-                <div className='text-xl font-bold'>PROSHOP</div>
+            <div className='container mx-auto flex justify-between text-slate-300'>
+                <div onClick={() => navigate('/')} className='text-xl font-bold cursor-pointer'>PROSHOP</div>
 
                 <div className='grid content-center'>
                     <div className='flex justify-between w-40'>
