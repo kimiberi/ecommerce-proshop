@@ -1,23 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { LeftOutlined } from '@ant-design/icons';
-import products from '../products'
+// import products from '../products'
 import Ratings from '../components/Ratings';
 import { Button } from 'antd';
+import axios from 'axios';
+// import _ from 'lodash';
 
-interface PROPS {
-    id: string;
+interface PRODUCT {
     name: string;
     image: string;
+    description: string;
+    countInStock: number;
     rating: number;
-    reviews: number;
+    numReviews: number;
     price: number;
 }
 
 const ProductScreen: React.FC = () => {
     let location = useLocation();
     const navigate = useNavigate();
-    const product = products.find(item => `/product/${item._id}` === location.pathname);
+    const [product, setProduct] = useState<PRODUCT>({
+        name: '',
+        image: '',
+        description: '',
+        countInStock: 0,
+        rating: 0,
+        numReviews: 0,
+        price: 0,
+    });
+    // const product = products.find(item => `/product/${item._id}` === location.pathname);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            // const { data } = await axios.get(`/api/products`)
+            // const findProduct = _.find(data, (o) => `/product/${o._id}` === location.pathname)
+            // setProduct(findProduct);
+
+            const { data } = await axios.get(`/api${location.pathname}`)
+            setProduct(data);
+        }
+        fetchProduct()
+    }, [location])
 
     // console.log("product", product);
 
