@@ -20,7 +20,7 @@ const ProductCard: React.FC<PROPS> = (props: PROPS) => {
         <Card
             hoverable
             title={name}
-            cover={<img alt={name} src={image} />}
+            cover={<img width='300' height='600' alt={name} src={image} />}
             onClick={() => navigate(`/product/${id}`)}
         >
             <div className='grid content-center'>
