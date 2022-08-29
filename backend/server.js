@@ -5,6 +5,7 @@ import colors from "colors"
 import connectDB from "./config/db.js"
 
 import productRoutes from "./routes/productRoutes.js"
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js"
 
 dotenv.config()
 connectDB()
@@ -25,6 +26,11 @@ app.use("/api/products", productRoutes)
 //   const product = products.find((item) => item._id === req.params.id)
 //   res.json(product)
 // })
+
+// use to check API URL if correct
+app.use(notFound)
+// Use to check specific id in API URL if correct
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
