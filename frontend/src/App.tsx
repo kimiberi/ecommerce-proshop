@@ -12,7 +12,7 @@ const App: React.FC = () => {
       <div className='min-h-screen container mx-auto py-14'>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
-          <Route path="/products/:id" element={<ProductScreen />} />
+          <Route path="/api/products/:id" element={<ProductScreen />} />
         </Routes>
       </div>
       <Footer />

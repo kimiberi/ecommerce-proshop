@@ -21,7 +21,7 @@ const ProductCard: React.FC<PROPS> = (props: PROPS) => {
             hoverable
             title={name}
             cover={<img width='300' height='600' alt={name} src={image} />}
-            onClick={() => navigate(`/product/${id}`)}
+            onClick={() => navigate(`/api/products/${id}`)}
         >
             <div className='grid content-center'>
                 <div className='flex justify-between'>

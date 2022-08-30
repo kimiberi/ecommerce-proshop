@@ -37,13 +37,14 @@ const ProductScreen: React.FC = () => {
             // const findProduct = _.find(data, (o) => `/product/${o._id}` === location.pathname)
             // setProduct(findProduct);
 
-            const { data } = await axios.get(`/api${location.pathname}`)
+            const { data } = await axios.get(`${location.pathname}`)
             setProduct(data);
         }
         fetchProduct()
     }, [location])
 
     // console.log("product", product);
+    // console.log('location.pathname', location.pathname);
 
     return (
         <>

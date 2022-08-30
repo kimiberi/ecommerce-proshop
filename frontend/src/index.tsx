@@ -4,8 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.min.css';
-import { Provider } from 'react-redux';
-import store from './store';
+import { Provider } from "react-redux"; // react component that we'll use to get access to our redux store
+import store from './state/store'; // export all redux stuff
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
