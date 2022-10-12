@@ -1,32 +1,65 @@
 import axios from 'axios';
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import { Dispatch } from 'redux';
 import ProductCard from '../components/ProductCard';
-import { useActions } from '../hooks/useActions';
+// import { useActions } from '../hooks/useActions';
 import { useTypeSelector } from '../hooks/useTypeSelector';
+import { ActionType } from '../state/action-types';
+import { Action } from '../state/actions';
 // import products from '../products'
 
-interface PRODUCTS {
-    _id: string;
-    name: string;
-    image: string;
-    rating: number;
-    numReviews: number;
-    price: number;
-}
+// interface PRODUCTS {
+//     _id: string;
+//     name: string;
+//     image: string;
+//     rating: number;
+//     numReviews: number;
+//     price: number;
+// }
 
 
 // console.log("products", products);
 
 const HomeScreen: React.FC = () => {
-    // const [products, setProducts] = useState<any>([]);
-    const { productRepositories } = useActions();
     const { products, loading, error } = useTypeSelector((state) => state.productList); // it came from reducers > index.ts
 
+    // OPTION 3 - Direct dispatch
+    const dispatch: Dispatch<Action> = useDispatch();
     useEffect(() => {
-        productRepositories()
-    }, [])
+        const fetchProducts = async () => {
+            dispatch({ type: ActionType.PRODUCT_LIST_REQUEST })
+
+            try {
+                const { data } = await axios.get('/api/products')
+                dispatch({
+                    type: ActionType.PRODUCT_LIST_SUCCESS,
+                    payload: data
+                })
+            } catch (err) {
+                // NOTE: if you get this error:"Object is of type 'unknown'", update the tsconfig.json
+                // tsconfig.json -> "useUnknownInCatchVariables": false
+                // works only on Typescript v4.4 or higher
+                dispatch({
+
+                    type: ActionType.PRODUCT_LIST_ERROR,
+                    payload: err.message
+                })
+            }
+        }
+        fetchProducts()
+    }, [dispatch])
+
+    // OPTION 2 - pwede lang pala to function Array sa may eventState nangyayari pero not advisable sa useEffect()
+    // const { productRepositories } = useActions();
+    // useEffect(() => {
+    //     productRepositories()
+    // }, [])
+
+    // OPTION 1
+    // const [products, setProducts] = useState<any>([]);
     // useEffect(() => {
     //     const fetchProducts = async () => {
     //         const { data } = await axios.get('/api/products')
@@ -35,7 +68,8 @@ const HomeScreen: React.FC = () => {
     //     fetchProducts()
     // }, [])
     // [] -> means when you put variable there and everytime it make changes then it fire up all inside the useEffect()
-    // console.log('products', products);
+
+    console.log('products', products);
 
     return (
         <>
