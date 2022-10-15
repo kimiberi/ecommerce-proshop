@@ -4,6 +4,8 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { Dispatch } from 'redux';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 import ProductCard from '../components/ProductCard';
 // import { useActions } from '../hooks/useActions';
 import { useTypeSelector } from '../hooks/useTypeSelector';
@@ -19,9 +21,6 @@ import { Action } from '../state/actions';
 //     numReviews: number;
 //     price: number;
 // }
-
-
-// console.log("products", products);
 
 const HomeScreen: React.FC = () => {
     const { products, loading, error } = useTypeSelector((state) => state.productList); // it came from reducers > index.ts
@@ -43,7 +42,6 @@ const HomeScreen: React.FC = () => {
                 // tsconfig.json -> "useUnknownInCatchVariables": false
                 // works only on Typescript v4.4 or higher
                 dispatch({
-
                     type: ActionType.PRODUCT_LIST_ERROR,
                     payload: err.message
                 })
@@ -74,10 +72,11 @@ const HomeScreen: React.FC = () => {
     return (
         <>
             <h2 className='text-2xl font-bold tracking-wide uppercase pb-4'>Latest Products</h2>
-            <div className='grid xl:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4'>
-                {loading ? (<h2>Loading...</h2>) :
-                    error ? (<h2>{error}</h2>) :
-                        _.map(products, (item: any, index) => {
+
+            {loading ? (<Loader />) :
+                error ? (<Message msg={error} />) : (
+                    <div className='grid xl:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4'>
+                        {_.map(products, (item: any, index) => {
                             return (
                                 <ProductCard
                                     key={index}
@@ -90,7 +89,10 @@ const HomeScreen: React.FC = () => {
                                 />
                             )
                         })}
-                {/* {products.map((item, index) => (
+                    </div>
+                )
+            }
+            {/* {products.map((item, index) => (
                     <ProductCard
                         key={index}
                         id={item._id}
@@ -101,7 +103,6 @@ const HomeScreen: React.FC = () => {
                         price={item.price}
                     />
                 ))} */}
-            </div>
             <Outlet />
         </>
     )
