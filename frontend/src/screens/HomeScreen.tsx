@@ -23,7 +23,7 @@ import { useTypeSelector } from '../hooks/useTypeSelector';
 // }
 
 const HomeScreen: React.FC = () => {
-    const { products, loading, error } = useTypeSelector((state) => state.productList); // it came from reducers > index.ts
+    const { products, loading, error } = useTypeSelector((state) => state.allProductsList); // it came from reducers > index.ts
 
     // OPTION 3 - Direct dispatch
     // const dispatch: Dispatch<Action> = useDispatch();
@@ -52,9 +52,9 @@ const HomeScreen: React.FC = () => {
 
 
     // OPTION 2 - pwede lang pala to function Array sa may eventState nangyayari pero not advisable sa useEffect()
-    const { productRepositories } = useActions();
+    const { allProductRepositories } = useActions();
     useEffect(() => {
-        productRepositories()
+        allProductRepositories()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -74,7 +74,6 @@ const HomeScreen: React.FC = () => {
     return (
         <>
             <h2 className='text-2xl font-bold tracking-wide uppercase pb-4'>Latest Products</h2>
-
             {loading ? (<Loader />) :
                 error ? (<Message msg={error} />) : (
                     <div className='grid xl:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4'>

@@ -6,5 +6,5 @@ export const useActions = () => {
     const dispatch = useDispatch();
 
     return bindActionCreators(actionCreators, dispatch);
-    // { productRepositories: dispatch(productRepositories()) }
+    // { allProductRepositories: dispatch(allProductRepositories()) }
 }
