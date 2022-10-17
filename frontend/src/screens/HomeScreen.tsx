@@ -1,16 +1,16 @@
-import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { Dispatch } from 'redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import ProductCard from '../components/ProductCard';
-// import { useActions } from '../hooks/useActions';
+import { useActions } from '../hooks/useActions';
 import { useTypeSelector } from '../hooks/useTypeSelector';
-import { ActionType } from '../state/action-types';
-import { Action } from '../state/actions';
+// import axios from 'axios';
+// import { ActionType } from '../state/action-types';
+// import { Action } from '../state/actions';
+// import { Dispatch } from 'redux';
+// import { useDispatch } from 'react-redux';
 // import products from '../products'
 
 // interface PRODUCTS {
@@ -26,35 +26,37 @@ const HomeScreen: React.FC = () => {
     const { products, loading, error } = useTypeSelector((state) => state.productList); // it came from reducers > index.ts
 
     // OPTION 3 - Direct dispatch
-    const dispatch: Dispatch<Action> = useDispatch();
-    useEffect(() => {
-        const fetchProducts = async () => {
-            dispatch({ type: ActionType.PRODUCT_LIST_REQUEST })
+    // const dispatch: Dispatch<Action> = useDispatch();
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         dispatch({ type: ActionType.PRODUCT_LIST_REQUEST })
 
-            try {
-                const { data } = await axios.get('/api/products')
-                dispatch({
-                    type: ActionType.PRODUCT_LIST_SUCCESS,
-                    payload: data
-                })
-            } catch (err) {
-                // NOTE: if you get this error:"Object is of type 'unknown'", update the tsconfig.json
-                // tsconfig.json -> "useUnknownInCatchVariables": false
-                // works only on Typescript v4.4 or higher
-                dispatch({
-                    type: ActionType.PRODUCT_LIST_ERROR,
-                    payload: err.message
-                })
-            }
-        }
-        fetchProducts()
-    }, [dispatch])
+    //         try {
+    //             const { data } = await axios.get('/api/products')
+    //             dispatch({
+    //                 type: ActionType.PRODUCT_LIST_SUCCESS,
+    //                 payload: data
+    //             })
+    //         } catch (err) {
+    //             // NOTE: if you get this error:"Object is of type 'unknown'", update the tsconfig.json
+    //             // tsconfig.json -> "useUnknownInCatchVariables": false
+    //             // works only on Typescript v4.4 or higher
+    //             dispatch({
+    //                 type: ActionType.PRODUCT_LIST_ERROR,
+    //                 payload: err.message
+    //             })
+    //         }
+    //     }
+    //     fetchProducts()
+    // }, [dispatch])
+
 
     // OPTION 2 - pwede lang pala to function Array sa may eventState nangyayari pero not advisable sa useEffect()
-    // const { productRepositories } = useActions();
-    // useEffect(() => {
-    //     productRepositories()
-    // }, [])
+    const { productRepositories } = useActions();
+    useEffect(() => {
+        productRepositories()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     // OPTION 1
     // const [products, setProducts] = useState<any>([]);
