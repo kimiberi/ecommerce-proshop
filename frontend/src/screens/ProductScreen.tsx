@@ -3,16 +3,17 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { LeftOutlined } from '@ant-design/icons';
 // import products from '../products'
 import Ratings from '../components/Ratings';
-import { Button, InputNumber, Space } from 'antd';
+import { Button, InputNumber, Space, Image, Skeleton } from 'antd';
 // import axios from 'axios';
 // import { Dispatch } from 'redux';
 // import { useDispatch } from 'react-redux';
 // import { ActionType } from '../state/action-types';
 // import { ActionAllProducts } from '../state/actions';
 import { useTypeSelector } from '../hooks/useTypeSelector';
-import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useActions } from '../hooks/useActions';
+import blankimage from '../imageInternal/blankimage.jpg'
+
 // import _ from 'lodash';
 // import styled from 'styled-components';
 
@@ -134,11 +135,11 @@ const ProductScreen: React.FC = () => {
                 <p onClick={() => navigate(-1)} className='mt-0.5 cursor-pointer'>Go Back</p>
             </div>
 
-            {loading ? (<Loader />) :
-                error ? (<Message msg={error} />) : (
-                    <>
-                        <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-10 content-center">
-                            <div><img alt={productDetails?.name} src={productDetails?.image} /></div>
+            {error ? (<Message msg={error} />) : (
+                <>
+                    <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-10 content-center">
+                        <div><Image width='300' height='600' preview={false} alt={productDetails?.name} src={`${!loading ? productDetails?.image : 'error'}`} fallback={blankimage} /></div>
+                        <Skeleton loading={loading} active style={{ display: 'flex', alignItems: 'center' }}>
                             <div className='grid content-center'>
                                 <h2 className='text-2xl uppercase font-bold'>{productDetails?.name}</h2>
                                 <div className='flex items-center'>
@@ -180,9 +181,10 @@ const ProductScreen: React.FC = () => {
                                     Add to Cart
                                 </Button>
                             </div>
-                        </div>
-                    </>
-                )
+                        </Skeleton>
+                    </div>
+                </>
+            )
             }
         </>
     )

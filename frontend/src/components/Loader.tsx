@@ -3,9 +3,7 @@ import { Spin } from 'antd';
 
 const Loader: React.FC = () => {
     return (
-        <div className='text-center'>
-            <Spin size="large" tip="Loading..." />
-        </div>
+        <div className='text-center'><Spin size="large" tip="Loading..." /></div>
     )
 }
 
