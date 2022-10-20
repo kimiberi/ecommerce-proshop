@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { LeftOutlined } from '@ant-design/icons';
 // import products from '../products'
 import Ratings from '../components/Ratings';
-import { Button } from 'antd';
+import { Button, InputNumber, Space } from 'antd';
 // import axios from 'axios';
 // import { Dispatch } from 'redux';
 // import { useDispatch } from 'react-redux';
@@ -14,6 +14,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useActions } from '../hooks/useActions';
 // import _ from 'lodash';
+// import styled from 'styled-components';
 
 // interface PRODUCT {
 //     name: string;
@@ -25,6 +26,15 @@ import { useActions } from '../hooks/useActions';
 //     price: number;
 //     [key: string]: string | number | number[];
 // }
+
+interface styles {
+    buttonBG: {
+        background: string;
+        color: string;
+        marginTop: string;
+        width: string;
+    }
+}
 
 const ProductScreen: React.FC = () => {
     let location = useLocation();
@@ -38,6 +48,17 @@ const ProductScreen: React.FC = () => {
         numReviews: 0,
         price: 0,
     });
+    const [qty, setQty] = useState<number>(1)
+    const [disableQty, setDisableQty] = useState<boolean>(true)
+
+    const styleRules: styles = {
+        buttonBG: {
+            background: `${!disableQty && '#334155'}`,
+            color: `${!disableQty && '#fff'}`,
+            marginTop: '15px',
+            width: '130px',
+        }
+    }
 
     // OPTION 1
     // const product = products.find(item => `/product/${item._id}` === location.pathname);
@@ -94,7 +115,14 @@ const ProductScreen: React.FC = () => {
     useEffect(() => {
         console.log("product", product);
         setProductDetails(product)
-    }, [product])
+
+        if (productDetails.countInStock > 0) {
+            setDisableQty(false)
+        }
+        if (!qty) {
+            setQty(1)
+        }
+    }, [product, productDetails.countInStock, qty])
 
     // console.log('location.pathname', location.pathname);
     // console.log("productDetails", productDetails);
@@ -118,18 +146,38 @@ const ProductScreen: React.FC = () => {
                                     <span className='pt-1'>{productDetails?.numReviews} reviews</span>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4 pt-2">
+                                <div className="grid grid-cols-2 gap-4 mt-2">
                                     <div className='text-xl font-bold'>$ {productDetails?.price}</div>
                                     <div className='flex items-center gap-2'>
                                         <span className='font-semibold'>Status</span>
-                                        {Number(productDetails?.countInStock) > 0 ? 'In Stock' : 'Sold Out'}
+                                        {Number(productDetails?.countInStock) > 0 ? (<span className='text-green-600 font-semibold'>In Stock</span>) : (<span className='text-red-600 font-semibold'>Sold Out</span>)}
                                     </div>
                                 </div>
 
                                 <h3 className='text-lg pt-14'>Description:</h3>
-                                <p>{productDetails?.description}</p>
-                                <Button value="large" style={{ background: '#334155', color: '#fff', marginTop: '20px', width: '130px', textTransform: 'uppercase' }}>
-                                    Add To Cart
+                                <p className='mb-10'>{productDetails?.description}</p>
+
+                                {Number(productDetails?.countInStock) > 0 && (
+                                    <Space>
+                                        <InputNumber
+                                            type='number'
+                                            min={1}
+                                            max={productDetails?.countInStock}
+                                            value={qty}
+                                            onChange={(e) => setQty(e)}
+                                        />
+                                        <span>{Number(productDetails?.countInStock)} pcs available</span>
+                                    </Space>
+                                )}
+
+                                <Button
+                                    disabled={disableQty}
+                                    value="large"
+                                    style={styleRules.buttonBG}
+                                    className='uppercase'
+                                    onClick={() => navigate(`/cart/${productDetails?._id}?qty=${qty}`)}
+                                >
+                                    Add to Cart
                                 </Button>
                             </div>
                         </div>
