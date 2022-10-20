@@ -138,7 +138,7 @@ const ProductScreen: React.FC = () => {
             {error ? (<Message msg={error} />) : (
                 <>
                     <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-10 content-center">
-                        <div><Image width='300' height='600' preview={false} alt={productDetails?.name} src={`${!loading ? productDetails?.image : 'error'}`} fallback={blankimage} /></div>
+                        <div><Image width='300' height='600' preview={false} alt={!loading ? productDetails?.name : 'no image available'} src={`${!loading ? productDetails?.image : 'error'}`} fallback={blankimage} /></div>
                         <Skeleton loading={loading} active style={{ display: 'flex', alignItems: 'center' }}>
                             <div className='grid content-center'>
                                 <h2 className='text-2xl uppercase font-bold'>{productDetails?.name}</h2>
