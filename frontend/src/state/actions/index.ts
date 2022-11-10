@@ -32,8 +32,23 @@ interface ProductRepoDetailsErrorAction {
     payload: string // error message
 }
 
+// =============================================
+
+interface CartRepositoriesAction {
+    type: ActionType.CART_ADD_ITEM_REQUEST
+}
+interface CartRepositoriesSuccessAction {
+    type: ActionType.CART_ADD_ITEM_SUCCESS,
+    payload: string[] // contains all that repositories/info we just found
+}
+interface CartRepoDetailsErrorAction {
+    type: ActionType.CART_ADD_ITEM_ERROR,
+    payload: string // error message
+}
+
 // OPTION 2.1
 // it represents ALL different possible actions that can be process by ALL different Reducers
 // List different types of interface 'action'
 export type ActionAllProducts = ProductsRepositoriesAction | ProductsRepositoriesSuccessAction | ProductsRepositoriesErrorAction
 export type ActionProduct = ProductRepoDetailsAction | ProductRepoDetailsSuccessAction | ProductRepoDetailsErrorAction
+export type ActionCart = CartRepositoriesAction | CartRepositoriesSuccessAction | CartRepoDetailsErrorAction
